@@ -1,0 +1,47 @@
+#define BLYNK_TEMPLATE_ID "TMPL3kooukjRf"
+#define BLYNK_TEMPLATE_NAME "Land Mine Detector"
+#define BLYNK_AUTH_TOKEN "i1nVvOLiDtlzp7BrYmqkG0f5_RJCDMLU"
+
+#define BLYNK_PRINT Serial
+#include <ESP8266WiFi.h> 
+#include <BlynkSimpleEsp8266.h>
+char auth[] = BLYNK_AUTH_TOKEN;
+
+char ssid[] = "test";  // type your wifi name
+char pass[] = "12345678";  // type your wifi password
+
+BlynkTimer timer;
+
+void sendSensor()
+{
+  int Metal = digitalRead(D0);
+  int GasLevel = analogRead(A0);
+  GasLevel = map(GasLevel, 94, 1024, 0, 100);
+
+  Blynk.virtualWrite(V1, GasLevel);
+
+  if(Metal == LOW)
+  {
+    Blynk.virtualWrite(V0, HIGH);
+    Blynk.logEvent("Alert");
+  }
+  else
+  {
+    Blynk.virtualWrite(V0, LOW);
+  }
+}
+
+void setup()
+{
+  Serial.begin(115200);
+  pinMode(A0, INPUT);
+  pinMode(D0, INPUT);
+  Blynk.begin(auth, ssid, pass);
+  timer.setInterval(1000L, sendSensor);
+}
+
+void loop()
+{
+  Blynk.run();
+  timer.run();
+}
