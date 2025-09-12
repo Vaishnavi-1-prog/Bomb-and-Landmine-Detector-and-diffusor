@@ -73,7 +73,6 @@ This project presents a multi-layered robotic solution designed to operate in ha
 
 ## 📸 Screenshots
 
-> _Add your screenshots here if needed_
 
 - Robot Top View
 - Robot Side View
